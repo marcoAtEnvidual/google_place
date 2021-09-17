@@ -5,7 +5,7 @@ void main() {
   test('init', () async {
     String apiKey = "Your-Key";
     var googlePlace =
-        GooglePlace(apiKey, proxyUrl: 'cors-anywhere.herokuapp.com');
+        GooglePlace.create(apiKey, proxyUrl: 'cors-anywhere.herokuapp.com');
     expect(googlePlace.apiKEY, apiKey);
     expect(googlePlace.search.apiKEY, apiKey);
     expect(googlePlace.details.apiKEY, apiKey);
