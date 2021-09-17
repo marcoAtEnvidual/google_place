@@ -40,6 +40,8 @@ export 'package:google_place/src/search/search_candidate.dart';
 export 'package:google_place/src/search/search_result.dart';
 export 'package:google_place/src/search/text_search_response.dart';
 
+late GooglePlace _instance;
+
 /// The Places API is a service that returns information about places.
 /// Places are defined within this API as establishments, geographic locations, or prominent points of interest.
 class GooglePlace {
@@ -70,7 +72,7 @@ class GooglePlace {
   /// Optional proxy url to web request
   final String? proxyUrl;
 
-  GooglePlace(
+  GooglePlace._(
     this.apiKEY, {
     this.headers = const {},
     this.proxyUrl,
@@ -81,4 +83,17 @@ class GooglePlace {
     this.autocomplete = Autocomplete(apiKEY, headers, proxyUrl);
     this.queryAutocomplete = QueryAutocomplete(apiKEY, headers, proxyUrl);
   }
+
+  static GooglePlace create(
+    String apiKEY, {
+    Map<String, String> headers = const {},
+    String? proxyUrl,
+  }) =>
+      _instance = GooglePlace._(
+        apiKEY,
+        headers: headers,
+        proxyUrl: proxyUrl,
+      );
+
+  static GooglePlace get instance => _instance;
 }
