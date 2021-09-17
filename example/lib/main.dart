@@ -7,6 +7,7 @@ import 'package:google_place/google_place.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await DotEnv().load('.env');
+  GooglePlace.create(DotEnv().env['API_KEY']);
   runApp(MyApp());
 }
 
@@ -29,15 +30,7 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  GooglePlace googlePlace;
   List<AutocompletePrediction> predictions = [];
-
-  @override
-  void initState() {
-    String apiKey = DotEnv().env['API_KEY'];
-    googlePlace = GooglePlace(apiKey);
-    super.initState();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -98,7 +91,7 @@ class _HomePageState extends State<HomePage> {
                           MaterialPageRoute(
                             builder: (context) => DetailsPage(
                               placeId: predictions[index].placeId,
-                              googlePlace: googlePlace,
+                              googlePlace: GooglePlace.instance,
                             ),
                           ),
                         );
@@ -119,7 +112,7 @@ class _HomePageState extends State<HomePage> {
   }
 
   void autoCompleteSearch(String value) async {
-    var result = await googlePlace.autocomplete.get(value);
+    var result = await GooglePlace.instance.autocomplete.get(value);
     if (result != null && result.predictions != null && mounted) {
       setState(() {
         predictions = result.predictions;
